@@ -1,0 +1,6 @@
+hadoop jar hadoop-streaming-2.7.1.jar -D  mapreduce.job.reduces=16 \
+-file mapper.py    -mapper mapper.py \
+-file reducer.py   -reducer reducer.py \
+-input hw-2/SalesJan2009.csv -output hw-2/countries
+
+hadoop fs -cat hw-2/countries/* | sort -n -k2 -r 

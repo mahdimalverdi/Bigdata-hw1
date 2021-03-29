@@ -5,21 +5,35 @@ from operator import itemgetter
 import sys
 
 
-def read_mapper_output(file, separator='\t'):
+def read_mapper_output(file):
     for line in file:
-        yield line.rstrip().split(separator, 1)
+        yield line
 
 def main(separator='\t'):
     lines = []
-    data = read_mapper_output(sys.stdin, separator=separator)
-    for current_word, group in groupby(data, itemgetter(0)):
+    data = read_mapper_output(sys.stdin)
+    max_temps = {}
+    min_temps = {}
+    for line in data:
         try:
-            total_count = sum(int(count) for current_word, count in group)
-            lines.append("%s%s%d" % (current_word, separator, total_count))
+            date, temp = line.split(separator)
+            temp = float(temp.strip('\n'))
+            year = date[0: 6]
+            if year in max_temps:
+                if(max_temps[year][1] < temp):
+                    max_temps[year] = (date,temp)
+            else:
+                max_temps[year] = (date,temp)
+            if year in min_temps:
+                if(min_temps[year][1] > temp):
+                    min_temps[year] = (date,temp)
+            else:
+                min_temps[year] = (date,temp)
         except ValueError:
             pass
         
-    print('\n'.join(lines))
+    for key in max_temps:
+        print('%s%s%s%s%f%s%s%s%f' % (key, separator, max_temps[key][0], separator, max_temps[key][1], separator, min_temps[key][0], separator, min_temps[key][1]))
 
 if __name__ == "__main__":
     main()

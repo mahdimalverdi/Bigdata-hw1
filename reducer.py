@@ -33,7 +33,8 @@ def main(separator='\t'):
             pass
         
     for key in max_temps:
-        print('%s%s%s%s%f%s%s%s%f' % (key, separator, max_temps[key][0], separator, max_temps[key][1], separator, min_temps[key][0], separator, min_temps[key][1]))
+        print('%s%s%s' % (max_temps[key][0], separator, max_temps[key][1]))
+        print('%s%s%s' % (min_temps[key][0], separator, min_temps[key][1]))
 
 if __name__ == "__main__":
     main()
